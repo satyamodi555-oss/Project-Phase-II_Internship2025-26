@@ -1,0 +1,534 @@
+/* Custom Dashboard Native Styles */
+
+:root {
+    /* Default Dark Mode */
+    --dash-bg: #f8fafc; 
+    --dash-card-bg: #ffffff;
+    --dash-border: #e2e8f0;
+    --dash-text-gold: #0284c7;
+    --dash-text-light: #0f172a;
+    --dash-text-muted: #64748b;
+    --dash-accent-blue: #0ea5e9;
+    --dash-accent-green: #059669;
+    --dash-accent-red: #e11d48;
+}
+
+body {
+    background-color: var(--dash-bg) !important;
+}
+
+/* Header Area */
+.dash-header-title {
+    color: #0f172a;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+/* Slicers (Dropdowns) */
+.slicer-card {
+    border: 1px solid var(--dash-border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    background: var(--dash-card-bg);
+}
+
+.slicer-label {
+    color: #0f172a;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.slicer-select {
+    background: transparent;
+    border: 1px solid var(--dash-border);
+    color: #0284c7;
+    width: 100%;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.slicer-select option {
+    background: var(--bg-card);
+    color: #0f172a;
+}
+
+/* KPI Cards */
+.kpi-card {
+    border: 1px solid var(--dash-border);
+    border-radius: 12px;
+    padding: 16px;
+    background: var(--dash-card-bg);
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    transition: var(--transition-smooth);
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-card);
+}
+
+.kpi-title {
+    color: #0f172a;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 4px;
+}
+
+.kpi-value {
+    color: #0284c7;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Chart Containers */
+.chart-card {
+    border: 1px solid var(--dash-border);
+    border-radius: 8px;
+    padding: 16px;
+    background: #ffffff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-title {
+    color: #0f172a;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.chart-container-inner {
+    position: relative;
+    flex-grow: 1;
+    min-height: 200px;
+    width: 100%;
+}
+
+/* Grid Layout Tweaks */
+.row-eq-height {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row-eq-height > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dashboard Guide Styles */
+.extra-small {
+    font-size: 0.75rem;
+}
+
+.info-item {
+    transition: transform 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.info-item:hover {
+    transform: translateX(5px);
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.section-icon-bg {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* Country Comparative Section Styles */
+.comparison-section {
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    margin-top: 2rem;
+}
+
+.comp-header {
+    border-bottom: 2px solid var(--dash-accent-blue);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.comp-controls {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    align-items: flex-end;
+}
+
+.comp-card-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 992px) {
+    .comp-card-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comp-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.comp-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.comp-country-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.country-avatar {
+    width: 50px;
+    height: 50px;
+    background: var(--dash-accent-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.comp-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.comp-metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--dash-border);
+}
+
+.metric-label {
+    color: #64748b;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.metric-value {
+    color: #0284c7;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.metric-category {
+    font-size: 0.8rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--dash-accent-blue);
+    color: white;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.compare-btn {
+    background: var(--dash-accent-blue);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.compare-btn:hover {
+    opacity: 0.9;
+}
+
+.loader-container {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.comparison-result {
+    display: none;
+}
+
+/* Premium Comparison Table Styles */
+.comp-table {
+    width: 100%;
+    margin-top: 20px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--dash-border);
+}
+
+.comp-table-header {
+    display: grid;
+    grid-template-columns: 250px 1fr 1fr;
+    background: #f1f5f9;
+    border-bottom: 1px solid var(--dash-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.comp-row {
+    display: grid;
+    grid-template-columns: 250px 1fr 1fr;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background 0.2s;
+}
+
+.comp-row:hover {
+    background: var(--bg-card-hover);
+}
+
+.comp-row:last-child {
+    border-bottom: none;
+}
+
+.comp-cell {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.comp-cell-label {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 600;
+    gap: 10px;
+    border-right: 1px solid var(--dash-border);
+}
+
+.comp-cell-value {
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    color: #0284c7;
+}
+
+.comp-header-country {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+
+.comp-header-country .country-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.comp-header-country h4 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: #0f172a;
+}
+
+.comp-metric-icon {
+    font-size: 1.1rem;
+    color: var(--dash-accent-blue);
+    width: 20px;
+}
+
+/* Color coding for better visuals */
+.row-positive { color: var(--dash-accent-green); }
+.row-negative { color: var(--dash-accent-red); }
+
+.comp-badge {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.badge-better {
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--dash-accent-green);
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.badge-worse {
+    background: rgba(220, 38, 38, 0.1);
+    color: var(--dash-accent-red);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.comp-delta {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 4px;
+    opacity: 0.8;
+}
+
+.delta-up { color: #4ade80; }
+.delta-down { color: #f87171; }
+
+@media (max-width: 768px) {
+    .comp-table-header, .comp-row {
+        grid-template-columns: 1fr;
+    }
+    .comp-cell-label {
+        background: rgba(255, 255, 255, 0.8);
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .comp-cell-value {
+        padding: 10px 20px;
+        justify-content: flex-start;
+        text-align: left;
+    }
+    .comp-cell-value::before {
+        content: attr(data-label) ": ";
+        color: #64748b;
+        font-weight: 400;
+        margin-right: 10px;
+        width: 80px;
+        display: inline-block;
+    }
+    .comp-header-country {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* Action Hub Buttons */
+.action-hub-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    color: white;
+    transition: var(--transition-smooth);
+    gap: 15px;
+    cursor: pointer;
+}
+
+.action-hub-btn:hover {
+    background: #f0f9ff;
+    border-color: #0ea5e9;
+    transform: translateY(-3px);
+}
+
+.action-hub-btn.active {
+    background: #e0f2fe;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.15);
+}
+
+.action-hub-btn .icon-wrap {
+    width: 45px;
+    height: 45px;
+    background: #e0f2fe;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #0284c7;
+}
+
+.action-hub-btn.active .icon-wrap {
+    background: var(--dash-accent-blue);
+    color: white;
+}
+
+/* FAQ Component */
+.faq-item {
+    transition: var(--transition-smooth);
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.faq-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.faq-question i {
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(45deg);
+    color: var(--dash-accent-red);
+}
+
+.faq-answer {
+    animation: slideDown 0.3s ease-out;
+    line-height: 1.7;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Power BI Dashboard Integration Styles */
+.dashboard-iframe-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--dash-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.dashboard-iframe-container:hover {
+    transform: translateY(-5px);
+    border-color: var(--dash-accent-blue);
+}
+
+.dashboard-iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.cursor-pointer { cursor: pointer; }

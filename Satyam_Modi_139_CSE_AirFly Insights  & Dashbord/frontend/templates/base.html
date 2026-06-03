@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AirFly Insights Dashboard{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- AOS - Animate On Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* ========== DESIGN SYSTEM ========== */
+        :root {
+            /* Light Aviation Theme Variables */
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.05);
+            --accent-gold: #0284c7; /* Aviation Blue */
+            --accent-gold-light: #38bdf8;
+            --accent-blue: #0284c7;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #059669;
+            --accent-rose: #e11d48;
+            --accent-violet: #6366f1;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --gradient-gold: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+            --gradient-blue: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --gradient-hero: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-glow: 0 0 30px rgba(2, 132, 199, 0.15);
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --nav-bg: rgba(255, 255, 255, 0.85);
+        }
+
+
+
+        /* ========== GLOBAL ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        .text-secondary {
+            color: var(--text-secondary) !important;
+        }
+
+        ::selection {
+            background: var(--accent-gold);
+            color: #fff;
+        }
+
+
+        /* ========== NAVBAR ========== */
+        .navbar-custom {
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0.8rem 0;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar-custom.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand-custom {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-long-form {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            -webkit-text-fill-color: var(--text-secondary);
+            opacity: 0.8;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-left: 1px solid var(--glass-border);
+            padding-left: 12px;
+            display: none;
+        }
+
+        @media (min-width: 992px) {
+            .brand-long-form {
+                display: block;
+            }
+        }
+
+        .navbar-brand-custom i {
+            -webkit-text-fill-color: var(--accent-gold);
+            margin-right: 6px;
+        }
+
+        .nav-link-custom {
+            color: var(--text-secondary) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem !important;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            color: var(--text-primary) !important;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .nav-link-custom.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--accent-gold);
+            border-radius: 2px;
+        }
+
+        .btn-nav-login {
+            background: var(--gradient-gold);
+            color: #000 !important;
+            font-weight: 600;
+            border: none;
+            padding: 0.5rem 1.5rem !important;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-nav-logout {
+            background: transparent;
+            color: var(--text-secondary) !important;
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1.2rem !important;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav-logout:hover {
+            border-color: var(--accent-rose);
+            color: var(--accent-rose) !important;
+        }
+
+        .btn-nav-register {
+            background: transparent;
+            color: var(--text-primary) !important;
+            font-weight: 600;
+            border: 1px solid var(--accent-gold);
+            padding: 0.5rem 1.5rem !important;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-nav-register:hover {
+            background: rgba(245, 158, 11, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* ========== PROFILE DROPDOWN ========== */
+        .profile-dropdown .dropdown-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            color: var(--text-primary) !important;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .profile-dropdown .dropdown-toggle:hover {
+            border-color: var(--accent-gold);
+            background: var(--bg-card-hover);
+        }
+
+        .profile-dropdown .dropdown-toggle::after {
+            display: none;
+        }
+
+        .profile-menu {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1rem;
+            min-width: 240px;
+            margin-top: 10px !important;
+            box-shadow: var(--shadow-card);
+        }
+
+        .profile-header {
+            padding-bottom: 0.75rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .profile-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .profile-email {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.6rem 0.8rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: var(--transition-smooth);
+        }
+
+        .profile-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-gold);
+        }
+
+        .profile-item.logout {
+            color: var(--accent-rose);
+            margin-top: 5px;
+        }
+
+        .profile-item.logout:hover {
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--accent-rose);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: 800;
+            font-size: 0.8rem;
+        }
+
+        /* ========== GLASS CARD ========== */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(245, 158, 11, 0.2);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card), var(--shadow-glow);
+        }
+
+        /* ========== STAT CARD ========== */
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .stat-card.gold::before {
+            background: var(--gradient-gold);
+        }
+
+        .stat-card.blue::before {
+            background: var(--gradient-blue);
+        }
+
+        .stat-card.emerald::before {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-card.rose::before {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-icon.gold {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .stat-icon.emerald {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+        }
+
+        .stat-icon.rose {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--accent-rose);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn-gold {
+            background: var(--gradient-gold);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.35);
+            color: #000;
+        }
+
+        .btn-outline-glass {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+            padding: 0.75rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-outline-glass:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            transform: translateY(-3px);
+        }
+
+        /* ========== FEATURE CARD ========== */
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            height: 100%;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.03) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.6s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(245, 158, 11, 0.25);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ========== SECTION ========== */
+        .section-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-gold);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+        }
+
+        /* ========== FORM ========== */
+        .form-control-glass {
+            background: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control-glass:focus {
+            background: rgba(17, 24, 39, 1);
+            border-color: var(--accent-gold);
+            color: var(--text-primary);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+        }
+
+        .form-control-glass::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-label-custom {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== STAR RATING ========== */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            gap: 5px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%2364748b' class='bi bi-star' viewBox='0 0 16 16'%3E%3Cpath d='M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957-2.928-2.787 4.077-.58L8 3.583l1.826 3.415 4.077.58-2.928 2.787.694 3.957-3.686-1.894z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            transition: var(--transition-smooth);
+        }
+
+        .star-rating input:checked~label,
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23f59e0b' class='bi bi-star-fill' viewBox='0 0 16 16'%3E%3Cpath d='M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.444-.36.791-.746.593L8 13.187l-4.389 2.256z'/%3E%3C/svg%3E");
+        }
+
+        /* ========== TABLE ========== */
+        .table-glass {
+            --bs-table-bg: transparent;
+            --bs-table-hover-bg: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+
+        .table-glass thead th {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 700;
+            padding: 1rem;
+        }
+
+        .table-glass td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 0.9rem 1rem;
+            vertical-align: middle;
+        }
+
+        /* ========== LOGIN PORTAL TABS & BADGES ========== */
+        .active-tab {
+            background: transparent !important;
+            color: var(--accent-gold) !important;
+            position: relative;
+        }
+
+        .active-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-gold);
+        }
+
+        .inactive-tab {
+            background: rgba(0, 0, 0, 0.2) !important;
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .inactive-tab:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .portal-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .portal-badge.admin {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-gold);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .login-form-container {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .x-small { font-size: 0.85rem; }
+        .extra-small { font-size: 0.8rem; }
+        .tracking-widest { letter-spacing: 0.2em; }
+
+        /* ========== BADGE COMPONENTS ========== */
+        .badge-status {
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-live {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .pulse-ring {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-ring.gold { background: var(--accent-gold); }
+
+        .pulse-ring::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
+            animation: pulse-ring 2s infinite;
+        }
+
+        /* ========== FLASH ALERTS ========== */
+        .alert-glass {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border-radius: 12px;
+            color: #ffffff !important;
+        }
+
+        .alert-glass.success { background: rgba(16, 185, 129, 0.2); }
+        .alert-glass.danger { background: rgba(244, 63, 94, 0.2); }
+        .alert-glass.info { background: rgba(59, 130, 246, 0.2); }
+
+        .alert-icon.success { color: #10b981; }
+        .alert-icon.danger { color: #f43f5e; }
+        .alert-icon.info { color: #3b82f6; }
+
+        /* ========== FOOTER ========== */
+        .footer-custom {
+            margin-top: auto;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--glass-border);
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(245, 158, 11, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(245, 158, 11, 0.25);
+            }
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-glow {
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        /* ========== SCROLLBAR ========== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+        }
+        /* ========== CHATBOT ========== */
+        .chatbot-bubble {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+            z-index: 2000;
+            transition: var(--transition-smooth);
+            animation: pulse-glow 3s infinite;
+        }
+
+        .chatbot-bubble:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            height: 550px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-card);
+            z-index: 2000;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .chatbot-window.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .chat-header {
+            background: var(--gradient-gold);
+            padding: 1.5rem;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header h5 {
+            margin: 0;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user {
+            background: var(--accent-gold);
+            color: #000;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            font-weight: 500;
+        }
+
+        .chat-input-area {
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        .chat-send {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .chat-send:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-recommendations {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .chat-rec-btn {
+            background: rgba(2, 132, 199, 0.05) !important;
+            color: #0284c7 !important;
+            border: 1px solid rgba(2, 132, 199, 0.2) !important;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-rec-btn:hover {
+            background: #0284c7 !important;
+            color: #fff !important;
+            border-color: #0284c7 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+        }
+
+        @media (max-width: 480px) {
+            .chatbot-window {
+                width: calc(100% - 40px);
+                right: 20px;
+                bottom: 90px;
+            }
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+
+<body data-user-authenticated="{{ 'true' if current_user.is_authenticated else 'false' }}" data-user-email="{{ current_user.email if current_user.is_authenticated else '' }}">
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="{{ url_for('home') }}">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-airplane-engines"></i>
+                    <span>AirFly Insights</span>
+                </div>
+                {% if current_user.is_authenticated %}
+                <span class="brand-long-form">Airline Operations Analytics</span>
+                {% endif %}
+            </a>
+            <div class="d-flex align-items-center">
+
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                    {% if not current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link btn-nav-register" href="{{ url_for('register') }}">
+                            Register
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-nav-login" href="{{ url_for('login') }}">
+                            Login
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {{ 'active' if request.endpoint == 'home' }}"
+                            href="{{ url_for('home') }}">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {{ 'active' if request.endpoint == 'about' }}"
+                            href="{{ url_for('about') }}">
+                            About
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {{ 'active' if request.endpoint == 'dashboard' }}"
+                            href="{{ url_for('dashboard') }}">
+                            Dashboard
+                        </a>
+                    </li>
+                    {% if current_user.email == 'admin@airfly.com' %}
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link nav-link-custom {{ 'active' if request.endpoint == 'admin' or request.endpoint == 'admin_database' }}"
+                            href="{{ url_for('admin') }}">
+                            <i class="bi bi-shield-lock-fill text-primary me-1"></i>Admin
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if current_user.email != 'admin@airfly.com' %}
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom position-relative {{ 'active' if request.endpoint == 'feedback' }}"
+                            href="{{ url_for('feedback') }}">
+                            Feedback
+                            <span id="notifBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.6rem; padding: 0.35em 0.65em;">
+                                0
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item dropdown ms-lg-3 profile-dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="toggleProfileInfo(event)">
+                            <div class="user-avatar text-uppercase">
+                                {{ current_user.username[0] if current_user.username else current_user.email[0] }}
+                            </div>
+                            <!-- Info hidden until clicked -->
+                            <i class="bi bi-person-lock ms-1" id="profileLockIcon"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end profile-menu border-0 shadow" aria-labelledby="profileDropdown" id="profileInfoCard" style="display: none;">
+                            <li class="profile-header text-center text-lg-start">
+                                <span class="profile-name text-truncate">{{ current_user.username }}</span>
+                                <span class="profile-email text-truncate">{{ current_user.email }}</span>
+                            </li>
+                            <li>
+                                <a class="profile-item logout" href="{{ url_for('logout') }}">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== FLASH MESSAGES ===== -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show alert-glass {{ 'success' if category=='success' else 'danger' if category=='danger' else 'info' }} border-0 shadow-sm mb-3 d-flex align-items-center" role="alert">
+            <i class="bi bi-{% if category=='success' %}check-circle-fill{% elif category=='danger' %}exclamation-triangle-fill{% else %}info-circle-fill{% endif %} alert-icon {{ 'success' if category=='success' else 'danger' if category=='danger' else 'info' }} me-2 fs-5"></i>
+            <span class="fw-medium">{{ message }}</span>
+            <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <span class="navbar-brand-custom" style="font-size: 1rem;">
+                        <i class="bi bi-airplane-engines"></i> AirFly Insights
+                    </span>
+                    <span class="ms-2">Airline Operations Analytics</span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <span>&copy; 2026 Built with Flask & Power BI</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init AOS
+        // Notification Fetching
+        async function updateNotifications() {
+            try {
+                const response = await fetch('/api/user/notifications');
+                const data = await response.json();
+                const badge = document.getElementById('notifBadge');
+                if (badge && data.unread_count > 0) {
+                    badge.textContent = data.unread_count;
+                    badge.classList.remove('d-none');
+                } else if (badge) {
+                    badge.classList.add('d-none');
+                }
+            } catch (err) {
+                console.error('Notification fetch error:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+             AOS.init({ duration: 700, easing: 'ease-out-cubic', once: true, offset: 50 });
+             const isAuth = document.body.getAttribute('data-user-authenticated') === 'true';
+             const userEmail = document.body.getAttribute('data-user-email');
+             if (isAuth && userEmail !== 'admin@airfly.com') {
+                 updateNotifications();
+                 // Poll every 60 seconds
+                 setInterval(updateNotifications, 60000);
+             }
+        });
+
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar-custom').classList.toggle('scrolled', window.scrollY > 30);
+        });
+
+        // Animated counters
+        function animateCounters() {
+            document.querySelectorAll('[data-count]').forEach(el => {
+                const target = parseInt(el.getAttribute('data-count'));
+                const suffix = el.getAttribute('data-suffix') || '';
+                let current = 0;
+                const increment = Math.max(1, Math.ceil(target / 60));
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    el.textContent = current.toLocaleString() + suffix;
+                }, 25);
+            });
+        }
+        
+        // Trigger counters when they enter viewport
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    counterObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        const counterSection = document.querySelector('[data-count]');
+        if (counterSection) counterObserver.observe(counterSection);
+
+        // Toggle Profile Info logic
+        function toggleProfileInfo(event) {
+            const card = document.getElementById('profileInfoCard');
+            const icon = document.getElementById('profileLockIcon');
+            
+            if (card.style.display === 'none' || card.style.display === '') {
+                card.style.display = 'block';
+                icon.classList.remove('bi-person-lock');
+                icon.classList.add('bi-person-check-fill');
+            } else {
+                card.style.display = 'none';
+                icon.classList.remove('bi-person-check-fill');
+                icon.classList.add('bi-person-lock');
+            }
+        }
+        // Chatbot Toggle
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('active');
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const messages = document.getElementById('chatMessages');
+            const query = input.value.trim();
+
+            if (!query) return;
+
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.textContent = query;
+            messages.appendChild(userMsg);
+
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
+
+            // Loading indicator
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'message bot';
+            loadingMsg.innerHTML = '<i class="bi bi-three-dots"></i> Thinking...';
+            messages.appendChild(loadingMsg);
+            messages.scrollTop = messages.scrollHeight;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+                const data = await response.json();
+                
+                messages.removeChild(loadingMsg);
+                
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message bot';
+                botMsg.innerHTML = data.response;
+                messages.appendChild(botMsg);
+                messages.scrollTop = messages.scrollHeight;
+            } catch (err) {
+                messages.removeChild(loadingMsg);
+                const errMsg = document.createElement('div');
+                errMsg.className = 'message bot';
+                errMsg.textContent = "Sorry, I'm having trouble connecting right now.";
+                messages.appendChild(errMsg);
+            }
+        }
+
+        function handleChatKey(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function submitRecommendation(query) {
+            const input = document.getElementById('chatInput');
+            input.value = query;
+            await sendChatMessage();
+        }
+    </script>
+    <!-- Chatbot UI (Restricted to logged-in users) -->
+    <!-- Chatbot UI (Visible to all, functionality restricted) -->
+    <div class="chatbot-bubble" id="chatBubble" onclick="toggleChat()">
+        <i class="bi bi-robot"></i>
+    </div>
+
+    <div class="chatbot-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-stars"></i>
+                <h5>AirFly Insights Assistant</h5>
+            </div>
+            <button class="btn-close btn-close-dark" onclick="toggleChat()"></button>
+        </div>
+        
+        {% if current_user.is_authenticated %}
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                Greetings. I am your AI Aviation Analytics Assistant. How may I assist your analysis today?
+            </div>
+            
+            <div class="chat-recommendations">
+                <button class="chat-rec-btn" onclick="submitRecommendation('Give top 10 airlines')">
+                    <i class="bi bi-bar-chart-fill me-2"></i> Give top 10 airlines
+                </button>
+                <button class="chat-rec-btn" onclick="submitRecommendation('Compare Delta vs United')">
+                    <i class="bi bi-airplane-engines-fill me-2"></i> Compare Delta vs United
+                </button>
+                <button class="chat-rec-btn" onclick="submitRecommendation('What is the average weather delay for American Airlines?')">
+                    <i class="bi bi-cloud-sun-fill me-2"></i> Weather delay of AA
+                </button>
+                <button class="chat-rec-btn" onclick="submitRecommendation('Show flight statistics for February')">
+                    <i class="bi bi-calendar3 me-2"></i> Flight stats for February
+                </button>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask something..." onkeypress="handleChatKey(event)">
+            <button class="chat-send" onclick="sendChatMessage()">
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </div>
+        {% else %}
+        <div class="chat-messages">
+            <div class="message bot">
+                <i class="bi bi-lock-fill me-2"></i><b>Access Restricted</b><br><br>
+                Please <a href="{{ url_for('login') }}" class="text-gold">login</a> to consult with the AirFly Insights Aviation Analytics Assistant and access real-time data insights.
+            </div>
+        </div>
+        <div class="chat-input-area" style="opacity: 0.5; pointer-events: none;">
+            <input type="text" class="chat-input" disabled placeholder="Login required...">
+            <button class="chat-send" disabled>
+                <i class="bi bi-send-fill"></i>
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

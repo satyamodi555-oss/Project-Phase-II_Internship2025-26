@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Register' if register else 'Login' }} - AirFly Insights Dashboard{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-lg-5 col-md-7" data-aos="fade-up">
+            <div class="glass-card p-0 overflow-hidden">
+                <!-- Tab Headers -->
+                <div class="d-flex border-bottom" style="border-color: rgba(255,255,255,0.05) !important;">
+                    <button class="flex-grow-1 py-3 border-0 transition-all fw-bold small text-uppercase active-tab"
+                        id="btnUserTab" onclick="switchLogin('user')">
+                        <i class="bi bi-person-fill me-2"></i>User Login
+                    </button>
+                    <button class="flex-grow-1 py-3 border-0 transition-all fw-bold small text-uppercase inactive-tab"
+                        id="btnAdminTab" onclick="switchLogin('admin')" style="background: var(--bg-card-hover);">
+                        <i class="bi bi-shield-lock-fill me-1"></i>Admin Login
+                    </button>
+                </div>
+
+                <div class="p-5">
+                    <!-- Headings -->
+                    <div class="text-center mb-4">
+                        <div id="userHeader">
+                            <div class="portal-badge mb-2">Consumer Access</div>
+                            <h2 class="fw-bold mb-2">{{ 'Create Account' if register else 'Welcome Back' }}</h2>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                {{ 'Sign up to access aviation reports and analytics' if register else 'Sign in to explore interactive flight datasets' }}
+                            </p>
+                        </div>
+                        <div id="adminHeader" class="d-none">
+                            <div class="portal-badge admin mb-2">Restricted Access</div>
+                            <h2 class="fw-bold mb-2">Admin Portal</h2>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                Secure gateway for platform administrators
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- User Form -->
+                    <div id="userLoginForm" class="login-form-container">
+                        <form method="POST" action="{{ url_for('register' if register else 'login') }}">
+                            <input type="hidden" name="login_type" value="user">
+                            <div class="mb-3">
+                                <label class="form-label-custom">
+                                    <i class="bi bi-envelope me-1"></i>Email Address
+                                </label>
+                                <input type="email" name="email" class="form-control form-control-glass"
+                                    placeholder="name@example.com" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label-custom">
+                                    <i class="bi bi-key me-1"></i>Password
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" name="password" id="passwordInputUser"
+                                        class="form-control form-control-glass" placeholder="••••••••" required
+                                        style="border-right: none;">
+                                    <button type="button" class="btn form-control-glass" onclick="togglePassword('passwordInputUser', 'eyeIconUser')"
+                                        style="border-left: none; border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-eye" id="eyeIconUser"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gold w-100 py-3 mb-3">
+                                <i class="bi bi-{% if register %}person-plus{% else %}box-arrow-in-right{% endif %} me-2"></i>
+                                {{ 'Create Account' if register else 'Sign In as User' }}
+                            </button>
+                        </form>
+                        
+                        <!-- Switch/Register link -->
+                        <div class="text-center mt-3">
+                            {% if register %}
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                Already have an account?
+                                <a href="{{ url_for('login') }}"
+                                    style="color: var(--accent-gold); font-weight: 600; text-decoration: none;">
+                                    Sign In <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </p>
+                            {% else %}
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                Don't have an account?
+                                <a href="{{ url_for('register') }}"
+                                    style="color: var(--accent-gold); font-weight: 600; text-decoration: none;">
+                                    Register <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Admin Form -->
+                    <div id="adminLoginForm" class="login-form-container d-none">
+                        <form method="POST" action="{{ url_for('login') }}">
+                            <input type="hidden" name="login_type" value="admin">
+                            <div class="mb-3">
+                                <label class="form-label-custom">
+                                    <i class="bi bi-shield-lock me-1"></i>Admin Email
+                                </label>
+                                <input type="email" name="email" class="form-control form-control-glass"
+                                    placeholder="admin@airfly.com" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label-custom">
+                                    <i class="bi bi-key me-1"></i>Security Credential
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" name="password" id="passwordInputAdmin"
+                                        class="form-control form-control-glass" placeholder="••••••••" required
+                                        style="border-right: none;">
+                                    <button type="button" class="btn form-control-glass" onclick="togglePassword('passwordInputAdmin', 'eyeIconAdmin')"
+                                        style="border-left: none; border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                                        <i class="bi bi-eye" id="eyeIconAdmin"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-outline-glass border-warning text-primary w-100 py-3 mb-3">
+                                <i class="bi bi-key-fill me-2"></i>Authorize Admin
+                            </button>
+                            <div class="text-center">
+                                <p class="text-muted extra-small mb-0 opacity-50">System governance only. Unauthorized access is prohibited.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'bi bi-eye';
+        }
+    }
+
+    function switchLogin(type) {
+        const userBtn = document.getElementById('btnUserTab');
+        const adminBtn = document.getElementById('btnAdminTab');
+        const userForm = document.getElementById('userLoginForm');
+        const adminForm = document.getElementById('adminLoginForm');
+        const userHeader = document.getElementById('userHeader');
+        const adminHeader = document.getElementById('adminHeader');
+
+        if (type === 'user') {
+            userBtn.classList.add('active-tab');
+            userBtn.classList.remove('inactive-tab');
+            adminBtn.classList.add('inactive-tab');
+            adminBtn.classList.remove('active-tab');
+            userForm.classList.remove('d-none');
+            adminForm.classList.add('d-none');
+            userHeader.classList.remove('d-none');
+            adminHeader.classList.add('d-none');
+        } else {
+            adminBtn.classList.add('active-tab');
+            adminBtn.classList.remove('inactive-tab');
+            userBtn.classList.add('inactive-tab');
+            userBtn.classList.remove('active-tab');
+            adminForm.classList.remove('d-none');
+            userForm.classList.add('d-none');
+            adminHeader.classList.remove('d-none');
+            userHeader.classList.add('d-none');
+        }
+    }
+</script>
+{% endblock %}

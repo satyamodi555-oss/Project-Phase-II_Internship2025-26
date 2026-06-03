@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Feedback & Communication - AirFly Insights Dashboard{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="row" data-aos="fade-up">
+        <!-- 1. Feedback Form -->
+        <div class="col-lg-5 mb-4">
+            <div class="glass-card p-4 p-md-5 h-100">
+                <div class="text-center mb-4">
+                    <div class="stat-icon blue mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        <i class="bi bi-chat-left-dots-fill"></i>
+                    </div>
+                    <h2 class="fw-bold mb-2">Communication Hub</h2>
+                    <p class="text-muted small">
+                        Share your suggestions, report issues, or request new features directly with our analytics team.
+                    </p>
+                </div>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label-custom small opacity-75">
+                            <i class="bi bi-tag me-1"></i>Feedback Category
+                        </label>
+                        <select name="category" class="form-control form-control-glass" required>
+                            <option value="General Feedback">General Feedback</option>
+                            <option value="Suggestion">Suggestion</option>
+                            <option value="Feature Request">Feature Request</option>
+                            <option value="Bug Report">Bug Report (Issue)</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label-custom small opacity-75">
+                            <i class="bi bi-star me-1"></i>Platform Rating
+                        </label>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5" checked /><label for="star5" title="5 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
+                            <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label-custom small opacity-75">
+                            <i class="bi bi-pencil-square me-1"></i>Detailed Message
+                        </label>
+                        <textarea name="message" class="form-control form-control-glass" rows="6"
+                            placeholder="Please provide details about your request or feedback..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-gold w-100 py-3 shadow-glow">
+                        <i class="bi bi-send-fill me-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 2. Communication History -->
+        <div class="col-lg-7 mb-4">
+            <div class="glass-card p-4 h-100 overflow-hidden">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h3 class="fw-bold mb-0" style="font-size: 1.3rem;">
+                        <i class="bi bi-clock-history me-2 text-gold"></i>Your History
+                    </h3>
+                    <span class="badge bg-secondary opacity-75">{{ history|length }} Total Messages</span>
+                </div>
+
+                <div class="feedback-history-list" style="max-height: 700px; overflow-y: auto; padding-right: 10px;">
+                    {% if not history %}
+                    <div class="text-center py-5 opacity-50">
+                        <i class="bi bi-inbox-fill" style="font-size: 3rem; display: block; margin-bottom: 1rem;"></i>
+                        <p>No feedback history found. Start a conversation today!</p>
+                    </div>
+                    {% else %}
+                        {% for f in history %}
+                        <div class="feedback-item mb-4 pb-4 border-bottom border-secondary-subtle last-no-border">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="badge 
+                                        {% if f.status == 'Pending' %}bg-warning text-dark
+                                        {% elif f.status == 'Reviewed' %}bg-info
+                                        {% elif f.status == 'Implemented' %}bg-success
+                                        {% endif %} 
+                                        mb-2">
+                                        {{ f.status }}
+                                    </span>
+                                    <h5 class="mb-0 fw-bold" style="font-size: 1rem;">{{ f.category }}</h5>
+                                </div>
+                                <span class="text-muted x-small">{{ f.submitted_at.strftime('%d %b %Y, %H:%M') }}</span>
+                            </div>
+                            
+                            <p class="mb-3 small text-secondary opacity-100" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px;">
+                                {{ f.message }}
+                            </p>
+
+
+
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .form-control-glass option {
+        background: #0f172a;
+        color: white;
+    }
+    .last-no-border:last-child {
+        border-bottom: none !important;
+    }
+    .x-small {
+        font-size: 0.75rem;
+    }
+    .italic {
+        font-style: italic;
+    }
+    .user-avatar.x-small {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    .feedback-history-list::-webkit-scrollbar {
+        width: 4px;
+    }
+    .feedback-history-list::-webkit-scrollbar-thumb {
+        background: var(--glass-border);
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}

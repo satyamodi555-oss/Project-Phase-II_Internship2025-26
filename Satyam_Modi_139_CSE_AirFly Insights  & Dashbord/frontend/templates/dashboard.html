@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% block title %}AirFly Insights Dashboard{% endblock %}
+
+{% block head %}
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- Include Leaflet.js for Interactive Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Include custom dashboard styles -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard_native.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-4 py-3" style="background-color: var(--dash-bg); min-height: 100vh;">
+
+    <!-- 1. How to Use AirFly Dashboard Section -->
+    <div class="row mb-5" data-aos="fade-down">
+        <div class="col-12">
+            <div class="glass-card p-4 h-100 overflow-hidden" style="border-left: 5px solid var(--dash-accent-blue);">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="section-icon-bg me-3" style="background: rgba(var(--accent-blue-rgb, 59, 130, 246), 0.1); padding: 12px; border-radius: 12px;">
+                        <i class="bi bi-lightbulb-fill fs-3" style="color: var(--dash-accent-blue);"></i>
+                    </div>
+                    <div>
+                        <h2 class="dash-header-title mb-0" style="font-size: 1.5rem; color:#0f172a;">Quick Start: How to Use the Dashboard</h2>
+                        <p class="text-secondary small mb-0">Master the analytical platform in three simple steps.</p>
+                    </div>
+                </div>
+                <div class="row g-4 mt-1">
+                    <div class="col-md-4">
+                        <div class="d-flex gap-3">
+                            <span class="badge rounded-pill bg-primary fs-6 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">1</span>
+                            <div>
+                                <h6 class="text-primary-theme mb-1" style="color: var(--text-primary);">Filter Operations</h6>
+                                <p class="extra-small text-muted mb-0">Use the <strong>Time</strong>, <strong>Carrier</strong>, and <strong>Airport</strong> slicers to isolate specific data subsets.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex gap-3">
+                            <span class="badge rounded-pill bg-warning text-dark fs-6 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">2</span>
+                            <div>
+                                <h6 class="text-primary-theme mb-1" style="color: var(--text-primary);">Analyze Key Metrics</h6>
+                                <p class="extra-small text-muted mb-0">Observe the <strong>KPI Cards</strong> for immediate insights into Average Delays and Total Cancellations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="d-flex gap-3">
+                            <span class="badge rounded-pill bg-info text-dark fs-6 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">3</span>
+                            <div>
+                                <h6 class="text-primary-theme mb-1" style="color: var(--text-primary);">Deep Dive Insights</h6>
+                                <p class="extra-small text-muted mb-0">Scroll to explore <strong>Route Maps</strong> and <strong>Trend Lines</strong> to understand seasonal impacts.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Row: Power BI Dashboard Integration -->
+    <div class="row mb-5" data-aos="fade-up">
+        <div class="col-12">
+            <div class="dashboard-iframe-container shadow-lg">
+                <iframe title="AirFly Insights Power Bi (opp2)"
+                        src="https://app.powerbi.com/view?r=eyJrIjoiY2ExZmQ4OTMtMWVkOC00ZDllLWE5MDUtZTZlZWMwYzE3NGY4IiwidCI6ImMxZmMyNThjLThkZjktNDBhMy1hYTFlLTRmMzJjZjcxMTNiZSJ9"
+                        frameborder="0"
+                        allowFullScreen="true">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. INTERACTIVE ACTION HUB (Buttons Row) -->
+    <div class="row g-4 mb-5" data-aos="fade-up">
+        <div class="col-md-6">
+            <button class="action-hub-btn active" onclick="toggleHubSection('guideSection', this)">
+                <div class="icon-wrap"><i class="bi bi-book-half"></i></div>
+                <div class="text-start">
+                    <span class="d-block fw-bold" style="color:#0f172a;">Dashboard Analytics Guide</span>
+                    <span class="extra-small" style="color:#64748b;">Metric definitions &amp; methodology</span>
+                </div>
+                <i class="bi bi-chevron-right ms-auto"></i>
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button class="action-hub-btn" onclick="toggleHubSection('faqSection', this)">
+                <div class="icon-wrap"><i class="bi bi-question-diamond-fill"></i></div>
+                <div class="text-start">
+                    <span class="d-block fw-bold" style="color:#0f172a;">Frequently Asked Questions</span>
+                    <span class="extra-small" style="color:#64748b;">Instant answers to key queries</span>
+                </div>
+                <i class="bi bi-chevron-right ms-auto"></i>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Dashboard Information Section (default active) -->
+    <div class="hub-content mb-5" id="guideSection">
+        <h3 class="dash-header-title mb-4" style="color:#0f172a;"
+            style="font-size: 1.8rem; border-bottom: 2px solid var(--dash-accent-blue); padding-bottom: 12px; letter-spacing: 0.5px; color:#0f172a;">
+            <i class="bi bi-info-circle-fill me-2" style="color: var(--dash-accent-blue);"></i>Dashboard Analytics Guide
+        </h3>
+
+        <!-- Slicers & KPIs Section -->
+        <div class="row g-4 mb-4" data-aos="fade-up">
+            <div class="col-lg-12">
+                <div class="chart-card shadow-lg" style="border-left: 4px solid var(--dash-accent-blue);">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-3 mb-md-0 border-end border-secondary border-opacity-25">
+                            <h4 class="fw-bold mb-3 fs-5">
+                                <i class="bi bi-sliders me-2" style="color: var(--dash-accent-blue);"></i>
+                                Interactive Controls & Slicers
+                            </h4>
+                            <p class="text-secondary small mb-3">Refine the dataset using the following interactive
+                                filters:</p>
+                            <ul class="list-unstyled small text-secondary gap-2 d-grid">
+                                <li><span class="badge bg-secondary me-2">Month</span> Filter data by specific seasonal periods.</li>
+                                <li><span class="badge bg-secondary me-2">Carrier</span> Drill down into specific airline operators.</li>
+                                <li><span class="badge bg-secondary me-2">Airport</span> Search and select individual departure or arrival hubs.</li>
+                                <li><span class="badge bg-secondary me-2">Time Group</span> Compare morning flights against evening operations.</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 ps-md-4">
+                            <h4 class="chart-title d-flex align-items-center mb-3">
+                                <i class="bi bi-lightning-charge-fill me-2" style="color: var(--dash-text-gold);"></i>
+                                Key Performance Indicators (KPIs)
+                            </h4>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="info-item p-2 bg-light bg-opacity-10 rounded shadow-sm mb-2 border border-secondary border-opacity-10">
+                                        <strong class="text-dark d-block small"><i class="bi bi-check2-circle me-1 text-primary"></i>Total Flights</strong>
+                                        <span class="text-muted extra-small">The total number of scheduled flights recorded in the dataset.</span>
+                                    </div>
+                                    <div class="info-item p-2 bg-light bg-opacity-10 rounded shadow-sm mb-2 border border-secondary border-opacity-10">
+                                        <strong class="text-dark d-block small"><i class="bi bi-clock me-1 text-primary"></i>Average Delay</strong>
+                                        <span class="text-muted extra-small">Aggregated average of delay minutes per flight.</span>
+                                    </div>
+                                    <div class="info-item p-2 bg-light bg-opacity-10 rounded shadow-sm mb-2 border border-secondary border-opacity-10">
+                                        <strong class="text-dark d-block small"><i class="bi bi-x-circle me-1 text-primary"></i>Total Cancellations</strong>
+                                        <span class="text-muted extra-small">Count of flights that did not operate as scheduled.</span>
+                                    </div>
+                                    <div class="info-item p-2 bg-light bg-opacity-10 rounded shadow-sm mb-2 border border-secondary border-opacity-10">
+                                        <strong class="text-dark d-block small"><i class="bi bi-shield-check me-1 text-primary"></i>On-Time Performance</strong>
+                                        <span class="text-muted extra-small">Percentage of flights arriving within 15 minutes of scheduled time.</span>
+                                    </div>
+                                    <div class="info-item p-2 bg-light bg-opacity-10 rounded shadow-sm border border-secondary border-opacity-10">
+                                        <strong class="text-dark d-block small"><i class="bi bi-exclamation-triangle me-1 text-primary"></i>Severe Disruptions</strong>
+                                        <span class="text-muted extra-small">Percentage of flights experiencing extreme delays or cancellations.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Network Overview Section -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="chart-card h-100 border-top-0" style="border-bottom: 3px solid var(--dash-accent-blue);">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="section-icon-bg me-3"
+                            style="background: rgba(59, 130, 246, 0.1); padding: 10px; border-radius: 12px;">
+                            <i class="bi bi-map-fill"
+                                style="font-size: 1.5rem; color: var(--dash-accent-blue);"></i>
+                        </div>
+                        <h4 class="chart-title mb-0" style="color:#0f172a;">Network Overview Section</h4>
+                    </div>
+                    <p class="mb-3 text-secondary" style="font-size: 0.95rem; line-height: 1.6;">
+                        High-level synthesis of flight volume and routing efficiency.
+                    </p>
+                    <div class="info-item mb-2 p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Top 10 Busiest Routes</strong>
+                        <span class="text-muted extra-small">Vertical bar chart identifying the most frequented origin-destination pairs.</span>
+                    </div>
+                    <div class="info-item mb-2 p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Airport Congestion Map</strong>
+                        <span class="text-muted extra-small">Map visualizing geographic concentration of flight traffic and delays.</span>
+                    </div>
+                    <div class="info-item p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Flight Share by Carrier</strong>
+                        <span class="text-muted extra-small">Donut chart categorizing flight volume by operating airline.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carrier Section -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="chart-card h-100 border-top-0" style="border-bottom: 3px solid var(--dash-accent-green);">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="section-icon-bg me-3"
+                            style="background: rgba(16, 185, 129, 0.1); padding: 10px; border-radius: 12px;">
+                            <i class="bi bi-building-fill"
+                                style="font-size: 1.5rem; color: var(--dash-accent-green);"></i>
+                        </div>
+                        <h4 class="chart-title mb-0" style="color:#0f172a;">Carrier Performance Section</h4>
+                    </div>
+                    <p class="mb-3 text-secondary opacity-100" style="font-size: 0.95rem; line-height: 1.6;">
+                        Comparative analysis of operational reliability across airlines.
+                    </p>
+                    <div class="info-item mb-2 p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Average Delay by Carrier</strong>
+                        <span class="text-secondary extra-small">Comparative bar chart showing delay variance by airline.</span>
+                    </div>
+                    <div class="info-item mb-2 p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Primary Causes of Delay</strong>
+                        <span class="text-secondary extra-small">Breakdown of carrier, weather, and NAS delays.</span>
+                    </div>
+                    <div class="info-item p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Cancellation Rates</strong>
+                        <span class="text-secondary extra-small">Tracks schedule reliability per airline.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trend Analysis Section -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="chart-card h-100 border-top-0" style="border-bottom: 3px solid var(--dash-text-gold);">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="section-icon-bg me-3"
+                            style="background: rgba(245, 158, 11, 0.1); padding: 10px; border-radius: 12px;">
+                            <i class="bi bi-calendar-check"
+                                style="font-size: 1.5rem; color: var(--dash-text-gold);"></i>
+                        </div>
+                        <h4 class="chart-title mb-0" style="color:#0f172a;">Seasonal Trend Section</h4>
+                    </div>
+                    <p class="mb-3 text-secondary opacity-100" style="font-size: 0.95rem; line-height: 1.6;">
+                        Temporal data tracking revealing the impact of time and season on flights.
+                    </p>
+                    <div class="info-item mb-2 p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Delays by Time of Day</strong>
+                        <span class="text-secondary opacity-75 extra-small">Line chart tracing delay accumulation throughout the day.</span>
+                    </div>
+                    <div class="info-item mb-2 p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Monthly Cancellation Trends</strong>
+                        <span class="text-secondary opacity-75 extra-small">Monitors seasonal spikes in weather and operational cancellations.</span>
+                    </div>
+                    <div class="info-item p-2 bg-light bg-opacity-25 rounded shadow-sm">
+                        <strong class="text-secondary d-block small">Year-over-Year Performance</strong>
+                        <span class="text-secondary opacity-75 extra-small">Tracks historical trends in overall network health.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Section -->
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="chart-card h-100 border-top-0" style="border-bottom: 3px solid var(--dash-accent-red);">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="section-icon-bg me-3"
+                            style="background: rgba(244, 63, 94, 0.1); padding: 10px; border-radius: 12px;">
+                            <i class="bi bi-bar-chart-steps"
+                                style="font-size: 1.5rem; color: var(--dash-accent-red);"></i>
+                        </div>
+                        <h4 class="chart-title mb-0" style="color:#0f172a;">Volume vs Delay Section</h4>
+                    </div>
+                    <p class="mb-3 text-secondary opacity-100" style="font-size: 0.95rem; line-height: 1.6;">
+                        Correlation studies between traffic volume and operational efficiency.
+                    </p>
+                    <div
+                        class="info-item p-3 bg-light bg-opacity-25 rounded shadow-sm border border-secondary border-opacity-10">
+                        <h6 class="text-secondary fw-bold mb-2">Flight Volume vs Average Delay by Hub</h6>
+                        <p class="small text-secondary opacity-75 mb-0">
+                            A scatter plot analysis cross-referencing airport traffic with delay severity. It answers the critical question:
+                            <em class="text-info">"Are busier airports necessarily more prone to delays?"</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. FAQ SECTION (Toggled) -->
+    <div class="hub-content d-none" id="faqSection">
+        <h3 class="dash-header-title mb-4" style="color:#0f172a;" style="font-size: 1.8rem;">
+            <i class="bi bi-patch-question-fill me-2" style="color: var(--dash-text-gold);"></i>Frequently Asked Questions
+        </h3>
+        
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="faq-container gap-3 d-flex flex-column">
+                    <div class="faq-item glass-card p-0 overflow-hidden" onclick="toggleFaq(this)">
+                        <div class="faq-question p-4 d-flex justify-content-between align-items-center cursor-pointer">
+                            <h5 class="mb-0 fw-bold fs-6">1. What does the "On-Time Performance" represent?</h5>
+                            <i class="bi bi-plus-lg text-gold"></i>
+                        </div>
+                        <div class="faq-answer p-4 text-secondary pt-0 border-top border-secondary border-opacity-10 d-none">
+                            On-Time Performance is the percentage of flights that depart or arrive within 15 minutes of their scheduled time, which is the standard industry metric for punctuality.
+                        </div>
+                    </div>
+
+                    <div class="faq-item glass-card p-0 overflow-hidden" onclick="toggleFaq(this)">
+                        <div class="faq-question p-4 d-flex justify-content-between align-items-center cursor-pointer">
+                            <h5 class="mb-0 fw-bold fs-6">2. How are delay causes categorized?</h5>
+                            <i class="bi bi-plus-lg text-gold"></i>
+                        </div>
+                        <div class="faq-answer p-4 text-secondary pt-0 border-top border-secondary border-opacity-10 d-none">
+                            Delays are categorized into Carrier (airline-controlled issues), Weather, NAS (National Airspace System/ATC constraints), Security, and Late Aircraft (cascading delays from previous legs).
+                        </div>
+                    </div>
+
+                    <div class="faq-item glass-card p-0 overflow-hidden" onclick="toggleFaq(this)">
+                        <div class="faq-question p-4 d-flex justify-content-between align-items-center cursor-pointer">
+                            <h5 class="mb-0 fw-bold fs-6">3. What is the source of this aviation data?</h5>
+                            <i class="bi bi-plus-lg text-gold"></i>
+                        </div>
+                        <div class="faq-answer p-4 text-secondary pt-0 border-top border-secondary border-opacity-10 d-none">
+                            The current dataset is derived from the <code>Kaggle Airlines Flights Data</code>, containing detailed flight logs from major carriers across numerous airports.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- Implementation Script Placeholder -->
+    <script src="{{ url_for('static', filename='js/dashboard_logic.js') }}"></script>
+{% endblock %}

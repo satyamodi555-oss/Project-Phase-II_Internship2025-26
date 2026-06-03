@@ -1,0 +1,325 @@
+{% extends "base.html" %}
+{% block title %}Home - AirFly Insights: Airline Operations Analytics{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<!-- ===== AUTHENTICATED USER HOME CONTENT ===== -->
+<div class="d-flex flex-column gap-5 pb-5">
+
+    <!-- Modern Hero Section -->
+    <section class="hero-section position-relative overflow-hidden" style="min-height: 85vh; padding-top: 100px;">
+        <!-- Abstract Background Elements -->
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); z-index: -2;"></div>
+        <div class="position-absolute top-0 start-0 w-100 h-100 opacity-50" style="background: radial-gradient(circle at 80% 20%, rgba(2, 132, 199, 0.15) 0%, transparent 50%); z-index: -1;"></div>
+        
+        <div class="container h-100">
+            <div class="row h-100 align-items-center g-5">
+                <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+                    <div class="badge bg-white text-primary rounded-pill px-3 py-2 mb-4 shadow-sm" style="font-weight: 600; letter-spacing: 1px;">
+                        <i class="bi bi-airplane-engines-fill me-2"></i>ENTERPRISE ANALYTICS
+                    </div>
+                    <h1 class="display-3 fw-bold mb-4" style="color: #0f172a; line-height: 1.1; letter-spacing: -1.5px;">
+                        Elevate Your <br>
+                        <span style="color: #0284c7;">Airline Operations</span>
+                    </h1>
+                    <p class="lead text-secondary mb-5" style="font-size: 1.15rem; line-height: 1.7; max-width: 500px;">
+                        Welcome to AirFly Insights. Visualize large-scale flight data, uncover hidden delay patterns, and optimize operational efficiency with our cutting-edge analytics platform.
+                    </p>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-5 py-3 shadow rounded-pill d-flex align-items-center transition-all hover-lift" style="background: #0284c7; border: none; font-weight: 600;">
+                            <i class="bi bi-bar-chart-fill me-2"></i> Launch Dashboard
+                        </a>
+                        <a href="{{ url_for('download_dataset') }}" class="btn btn-light btn-lg px-5 py-3 shadow-sm rounded-pill d-flex align-items-center transition-all hover-lift" style="border: 1px solid #e2e8f0; color: #0f172a; font-weight: 600;">
+                            <i class="bi bi-cloud-arrow-down-fill me-2 text-primary"></i> Dataset
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 position-relative" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <!-- Image Card -->
+                    <div class="position-relative" style="border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);">
+                        <img src="{{ url_for('static', filename='airport.png') }}" alt="Modern Airport Terminal" class="img-fluid w-100" style="border-radius: 24px; object-fit: cover; height: 550px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Project Overview -->
+    <section class="container py-5 mt-4" data-aos="fade-up">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-5">
+                <h6 class="text-primary fw-bold text-uppercase tracking-widest mb-2">The AirFly Engine</h6>
+                <h2 class="display-6 fw-bold mb-4 text-dark">Transforming raw data into operational clarity.</h2>
+                <p class="text-secondary mb-4" style="line-height: 1.8; font-size: 1.1rem;">
+                    AirFly Insights processes Kaggle Airlines Flights Data to provide an interactive lens for researchers and analysts. We observe the nuanced interplay between carrier delays, weather impacts, and route congestion to deliver actionable intelligence.
+                </p>
+                <ul class="list-unstyled text-secondary d-flex flex-column gap-3 mb-0">
+                    <li class="d-flex align-items-center"><i class="bi bi-check2-circle text-primary fs-5 me-3"></i> Deep-dive route congestion mapping</li>
+                    <li class="d-flex align-items-center"><i class="bi bi-check2-circle text-primary fs-5 me-3"></i> Carrier reliability benchmarking</li>
+                    <li class="d-flex align-items-center"><i class="bi bi-check2-circle text-primary fs-5 me-3"></i> Seasonal cancellation forecasting</li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-7">
+                <div class="row g-4">
+                    <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 hover-lift transition-all">
+                            <div class="card-body p-4">
+                                <div class="bg-primary bg-opacity-10 text-primary rounded-3 p-3 d-inline-block mb-3">
+                                    <i class="bi bi-airplane-engines fs-4"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark mb-1">14</h3>
+                                <p class="text-secondary mb-0 fw-medium">Major Carriers Monitored</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 hover-lift transition-all" style="transform: translateY(20px);">
+                            <div class="card-body p-4">
+                                <div class="bg-success bg-opacity-10 text-success rounded-3 p-3 d-inline-block mb-3">
+                                    <i class="bi bi-geo-alt-fill fs-4"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark mb-1">300+</h3>
+                                <p class="text-secondary mb-0 fw-medium">Airports Analyzed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="300">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 hover-lift transition-all">
+                            <div class="card-body p-4">
+                                <div class="bg-warning bg-opacity-10 text-warning rounded-3 p-3 d-inline-block mb-3">
+                                    <i class="bi bi-lightning-charge-fill fs-4"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark mb-1">Real-time</h3>
+                                <p class="text-secondary mb-0 fw-medium">Interactive Visualizations</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" data-aos="zoom-in" data-aos-delay="400">
+                        <div class="card border-0 shadow-sm h-100 rounded-4 hover-lift transition-all" style="transform: translateY(20px);">
+                            <div class="card-body p-4">
+                                <div class="bg-danger bg-opacity-10 text-danger rounded-3 p-3 d-inline-block mb-3">
+                                    <i class="bi bi-shield-check fs-4"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark mb-1">100%</h3>
+                                <p class="text-secondary mb-0 fw-medium">Data Integrity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Aviation Metrics Grid -->
+    <section class="container py-5 mt-5 bg-white rounded-5 shadow-sm px-5 border">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h6 class="text-primary fw-bold text-uppercase tracking-widest">Core Intelligence</h6>
+            <h2 class="display-6 fw-bold text-dark">Key Aviation Metrics</h2>
+        </div>
+        
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                <div class="h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-clock-history fs-3 text-warning me-3"></i>
+                        <h5 class="fw-bold text-dark mb-0">Flight Delays</h5>
+                    </div>
+                    <p class="text-secondary small mb-2">Analysis of flight delays categorized by carrier, weather, and NAS causes.</p>
+                    <hr class="my-3 bg-secondary opacity-25">
+                    <span class="badge bg-light text-dark border">Unit: Minutes</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-x-octagon-fill fs-3 text-danger me-3"></i>
+                        <h5 class="fw-bold text-dark mb-0">Cancellations</h5>
+                    </div>
+                    <p class="text-secondary small mb-2">The volume and frequency of cancelled flights across seasons and carriers.</p>
+                    <hr class="my-3 bg-secondary opacity-25">
+                    <span class="badge bg-light text-dark border">Unit: Percentage</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+                <div class="h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-map-fill fs-3 text-success me-3"></i>
+                        <h5 class="fw-bold text-dark mb-0">Route Analysis</h5>
+                    </div>
+                    <p class="text-secondary small mb-2">Evaluation of the busiest origin-destination pairs and flight networks.</p>
+                    <hr class="my-3 bg-secondary opacity-25">
+                    <span class="badge bg-light text-dark border">Focus: Efficiency Maps</span>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+                <div class="h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-building-fill-up fs-3 text-primary me-3"></i>
+                        <h5 class="fw-bold text-dark mb-0">Carrier Health</h5>
+                    </div>
+                    <p class="text-secondary small mb-2">Overall reliability and delay-prone tendencies of major airlines.</p>
+                    <hr class="my-3 bg-secondary opacity-25">
+                    <span class="badge bg-light text-dark border">Unit: Comparative Ratios</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<style>
+    .hover-lift:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
+{% else %}
+<!-- ===== PREMIUM GUEST LOGIN PORTAL ===== -->
+<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100vh; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+    
+    <!-- Decorative Background Shapes -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden" style="z-index: 0;">
+        <div class="position-absolute rounded-circle bg-primary opacity-10" style="width: 600px; height: 600px; top: -200px; left: -200px; filter: blur(60px);"></div>
+        <div class="position-absolute rounded-circle bg-info opacity-10" style="width: 400px; height: 400px; bottom: -100px; right: -100px; filter: blur(60px);"></div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="container position-relative z-1">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-5">
+                
+                <div class="text-center mb-5" data-aos="fade-down">
+                    <div class="bg-white rounded-circle d-inline-flex p-3 shadow-sm mb-4">
+                        <i class="bi bi-airplane-engines-fill text-primary fs-1"></i>
+                    </div>
+                    <h1 class="display-5 fw-bold text-dark mb-2" style="letter-spacing: -1px;">AirFly Insights</h1>
+                    <p class="text-secondary tracking-widest text-uppercase small fw-bold">Airline Operations Analytics</p>
+                </div>
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden" data-aos="zoom-in">
+                    <!-- Tab Headers -->
+                    <div class="d-flex bg-light border-bottom">
+                        <button class="flex-grow-1 py-3 border-0 bg-white text-dark fw-bold small text-uppercase" id="btnUserTab" onclick="switchLogin('user')" style="transition: all 0.3s; border-bottom: 3px solid #0284c7 !important;">
+                            <i class="bi bi-person-fill me-2"></i>User Portal
+                        </button>
+                        <button class="flex-grow-1 py-3 border-0 text-secondary fw-bold small text-uppercase" id="btnAdminTab" onclick="switchLogin('admin')" style="background: #f8fafc; transition: all 0.3s; border-bottom: 3px solid transparent !important;">
+                            <i class="bi bi-shield-lock-fill me-1"></i>Admin Access
+                        </button>
+                    </div>
+
+                    <div class="card-body p-5 bg-white">
+                        <!-- User Form -->
+                        <div id="userLoginForm">
+                            <div class="text-center mb-4">
+                                <h5 class="fw-bold text-dark">Welcome Back</h5>
+                                <p class="text-secondary small">Sign in to explore interactive flight datasets</p>
+                            </div>
+                            <form action="{{ url_for('login') }}" method="POST">
+                                <input type="hidden" name="login_type" value="user">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-secondary">Email Address</label>
+                                    <input type="email" name="email" class="form-control form-control-lg bg-light border-0" placeholder="john@example.com" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label small fw-bold text-secondary">Password</label>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="passUserHome" class="form-control form-control-lg bg-light border-0" placeholder="••••••••" required>
+                                        <button type="button" class="btn btn-light bg-light border-0 text-secondary" onclick="togglePassword('passUserHome', 'eyeUserHome')">
+                                            <i class="bi bi-eye" id="eyeUserHome"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg w-100 py-3 shadow-sm rounded-3 fw-bold">
+                                    Sign In as User
+                                </button>
+                                <div class="text-center mt-4">
+                                    <span class="text-secondary small">New to AirFly Insights?</span>
+                                    <a href="{{ url_for('register') }}" class="text-primary small fw-bold text-decoration-none ms-1">Create Account</a>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Admin Form -->
+                        <div id="adminLoginForm" class="d-none">
+                            <div class="text-center mb-4">
+                                <h5 class="fw-bold text-dark">System Administrator</h5>
+                                <p class="text-secondary small">Secure gateway for platform governance</p>
+                            </div>
+                            <form action="{{ url_for('login') }}" method="POST">
+                                <input type="hidden" name="login_type" value="admin">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-secondary">Admin Email</label>
+                                    <input type="email" name="email" class="form-control form-control-lg bg-light border-0" placeholder="admin@airfly.com" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label small fw-bold text-secondary">Security Credential</label>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="passAdminHome" class="form-control form-control-lg bg-light border-0" placeholder="••••••••" required>
+                                        <button type="button" class="btn btn-light bg-light border-0 text-secondary" onclick="togglePassword('passAdminHome', 'eyeAdminHome')">
+                                            <i class="bi bi-eye" id="eyeAdminHome"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-dark btn-lg w-100 py-3 shadow-sm rounded-3 fw-bold">
+                                    <i class="bi bi-shield-lock me-2"></i>Authorize Admin
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'bi bi-eye';
+        }
+    }
+    
+    function switchLogin(type) {
+        const userBtn = document.getElementById('btnUserTab');
+        const adminBtn = document.getElementById('btnAdminTab');
+        const userForm = document.getElementById('userLoginForm');
+        const adminForm = document.getElementById('adminLoginForm');
+
+        if (type === 'user') {
+            userBtn.className = 'flex-grow-1 py-3 border-0 bg-white text-dark fw-bold small text-uppercase';
+            userBtn.style.borderBottom = '3px solid #0284c7';
+            
+            adminBtn.className = 'flex-grow-1 py-3 border-0 text-secondary fw-bold small text-uppercase';
+            adminBtn.style.background = '#f8fafc';
+            adminBtn.style.borderBottom = '3px solid transparent';
+            
+            userForm.classList.remove('d-none');
+            adminForm.classList.add('d-none');
+        } else {
+            adminBtn.className = 'flex-grow-1 py-3 border-0 bg-white text-dark fw-bold small text-uppercase';
+            adminBtn.style.borderBottom = '3px solid #0f172a';
+            
+            userBtn.className = 'flex-grow-1 py-3 border-0 text-secondary fw-bold small text-uppercase';
+            userBtn.style.background = '#f8fafc';
+            userBtn.style.borderBottom = '3px solid transparent';
+            
+            adminForm.classList.remove('d-none');
+            userForm.classList.add('d-none');
+        }
+    }
+</script>
+{% endif %}
+{% endblock %}
