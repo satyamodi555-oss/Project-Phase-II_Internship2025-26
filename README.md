@@ -68,13 +68,7 @@ AirFly Insights is a comprehensive data analytics platform and web application b
 - `instance/` - Contains the SQLite database file and instances.
 - `requirements.txt` - Python dependencies.
 - `Internship Report Final.pdf` - Project report detailing the architecture and development phases.
-
-## Default Credentials
-
-An admin account is automatically provisioned on application startup:
-- **Email:** `admin@airfly.com`
-- **Password:** `admin123`
-
+- 
 ## License
 
 This project is intended for educational and analytical purposes.
